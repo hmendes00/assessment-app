@@ -1,7 +1,6 @@
 .DS_Store
 node_modules
 /dist
-src/helpers/config.json
 
 # local env files
 .env.local
