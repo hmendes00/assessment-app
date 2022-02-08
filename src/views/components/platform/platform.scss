@@ -1,0 +1,31 @@
+.platform {
+  background-color: $bg-dark;
+  padding: 20px;
+  .platform-layout {
+    display: flex;
+    justify-content: space-evenly;
+
+    .problem-block {
+      background-color: $bg-darker;
+      padding: 10px;
+      color: $font-lighter;
+      border-radius: 5px;
+    }
+
+    div {
+      flex: 1;
+    }
+
+    .coding-area {
+      flex: 2;
+      margin: 0 10px;
+    }
+  }
+
+  .test-case-area {
+    display: flex;
+    flex-direction: column;
+    .test-case {
+    }
+  }
+}
