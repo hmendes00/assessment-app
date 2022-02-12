@@ -22,6 +22,9 @@ const actionOfApp = {
    */
   async [AppActionTypes.GET_LOGGED_USER]() {
     const user = await ToguroUserService.getLoggedUser();
+    if (!user) {
+      return;
+    }
     appCommitter(AppMutationTypes.SET_LOGGED_USER, user);
   },
 

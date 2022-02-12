@@ -5,14 +5,16 @@ export interface User {
   avatarUrl?: string;
 }
 
-export interface TestCase {
+export interface CustomTestCase {
   input: any;
   output: any;
 }
 
 export interface CodingProblem {
   question: string;
-  testCases?: TestCase[];
+  testCases: CustomTestCase[];
   /** duration in minutes */
   duration: number;
+  exampleFunction: string;
+  functionToRunWhenTesting: string;
 }
