@@ -101,10 +101,6 @@
 
   const getBaseCodeForWorker = () => {
     return `let window = {};
-    window.alert = function(){
-      console.log.apply(console, ["Alert: "].concat(Array.prototype.slice.call(arguments)));
-    };
-    let alert = window.alert;
     let console = {
       log: function(){
         var str = "";
