@@ -2,7 +2,7 @@
   <div ref="root" class="platform">
     <div class="platform-layout">
       <div class="problem-block problem-description">
-        <h2>Problem Description</h2>
+        <h2>{{ $t('problem-description') }}</h2>
         <p class="description">
           {{ problem?.question }}
         </p>
@@ -30,8 +30,8 @@
         />
       </div>
       <div class="problem-block result-area">
-        <h2>Result:</h2>
-        <div ref="resultRenderer">Run your code to see the logs here.</div>
+        <h2>{{ $t('result') }}:</h2>
+        <div ref="resultRenderer" class="result-output">{{ $t('run-code-to-see-logs') }}</div>
       </div>
     </div>
   </div>
@@ -46,7 +46,7 @@
   import { InjectCssInShadoRoot } from '@/helpers/css-injector';
   import { NSelect, NButton } from 'naive-ui';
   import { useLang } from '@/services/lang-service';
-  // const codingArea = ref(null);
+  import * as ts from 'typescript';
 
   const { $t } = useLang();
   const root = ref<HTMLDivElement>();
@@ -72,9 +72,6 @@
     wordWrap: true
   };
   const code = ref('');
-  // document.body.addEventListener('keyup', function () {
-  //   debugger;
-  // });
 
   watch(problem, (value) => {
     code.value = [
@@ -88,12 +85,6 @@
     ].join('\n');
   });
   onMounted(() => {
-    let style = document.createElement('link');
-    style.rel = 'stylesheet';
-    style.type = 'text/css';
-    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.css';
-    root.value!.appendChild(style);
-
     InjectCssInShadoRoot(root.value!, 'style[cssr-id]');
   });
 
@@ -101,45 +92,75 @@
     appDispatcher(AppActionTypes.GET_CODING_PROBLEM);
   });
 
-  window.addEventListener('message', (e) => {
-    const data = e.data;
-    if (data.type === 'log') {
-      const _p = document.createElement('p');
-      _p.innerHTML = data.args;
-      resultRenderer.value?.appendChild(_p);
+  const getCode = () => {
+    if (selectedLanguage.value === 'typescript') {
+      return ts.transpile(code.value);
     }
-  });
+    return code.value;
+  };
 
-  const createIframeResult = () => {
+  const getBaseCodeForWorker = () => {
+    return `let window = {};
+    window.alert = function(){
+      console.log.apply(console, ["Alert: "].concat(Array.prototype.slice.call(arguments)));
+    };
+    let alert = window.alert;
+    let console = {
+      log: function(){
+        var str = "";
+        for(var i = 0; i < arguments.length; i++){
+          str += JSON.stringify(arguments[i]) + " ";
+        }
+        str += "\\n";
+        // send the message back to the main thread
+        self.postMessage(str);
+      },
+      error: function(){
+        console.log.apply(console, ["ERROR: "].concat(Array.prototype.slice.call(arguments)));
+      },
+      warn: function(){
+        console.log.apply(console, ["WARNING: "].concat(Array.prototype.slice.call(arguments)));
+      }
+    };
+    `;
+  };
+
+  const execFunction = () => {
     resultRenderer.value!.innerHTML = '';
-    // if (resultRenderer.value?.querySelector('#platform-result-frame-test')) {
-    // resultRenderer.value?.querySelector('#platform-result-frame-test')?.remove();
+    const bb = new Blob([getBaseCodeForWorker() + getCode()], {
+      type: 'text/javascript'
+    });
+    const bbURL = URL.createObjectURL(bb);
+    let worker: Worker | null = new Worker(bbURL);
 
-    // }
+    worker.addEventListener(
+      'message',
+      function (e: any) {
+        const string = e.data.toString();
+        const _p = document.createElement('p');
+        _p.innerHTML = string;
+        resultRenderer.value?.appendChild(_p);
+      }.bind(this)
+    );
 
-    const iframe = document.createElement('iframe');
-    iframe.id = 'platform-result-frame-test';
-    iframe.style.display = 'none';
-    iframe.src =
-      'data:text/html;charset=utf-8,' +
-      encodeURI(
-        `<script>
-          const originalLog = console.log;
-          console.log = (...args) => {
-            parent.window.postMessage({ type: 'log', args: args }, '*');
-            originalLog(...args)
-          };
-          ${code.value}
-        <\/script>`
-      );
-    resultRenderer.value?.appendChild(iframe);
+    worker.addEventListener('error', function (e) {
+      var string = e.message.toString();
+      const _p = document.createElement('p');
+      _p.innerHTML = 'ERROR: ' + string;
+      resultRenderer.value?.appendChild(_p);
+    });
+
+    worker.postMessage('start');
+
+    setTimeout(function () {
+      worker?.terminate();
+      worker = null;
+    }, 2000); // if still running after 2 seconds, terminate process (it probably means the code has infinite loop)
   };
 
   const evaluate = () => {
     if (problem.value) {
-      if (selectedLanguage.value === 'javascript') {
-        createIframeResult();
-      }
+      execFunction();
     }
   };
 </script>

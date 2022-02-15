@@ -1,4 +1,7 @@
 {
   "your-app": "Your app here",
-  "test-case-example": "Example of test case"
+  "test-case-example": "Example of test case",
+  "problem-description": "Problem description",
+  "result": "Result",
+  "run-code-to-see-logs": "Run your code to see the logs here."
 }

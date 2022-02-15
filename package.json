@@ -65,6 +65,7 @@
     "not dead"
   ],
   "dependencies": {
+    "uuid": "^8.3.2",
     "vue-monaco-cdn": "^2.0.3"
   }
 }

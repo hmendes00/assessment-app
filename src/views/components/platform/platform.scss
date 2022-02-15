@@ -51,5 +51,14 @@
         margin-top: 20px;
       }
     }
+
+    .result-area {
+      .result-output {
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+    }
   }
+
+  @import './monaco-editor.scss';
 }
