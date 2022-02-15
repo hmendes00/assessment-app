@@ -85,6 +85,11 @@
     ].join('\n');
   });
   onMounted(() => {
+    let style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.type = 'text/css';
+    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.css';
+    root.value!.appendChild(style);
     InjectCssInShadoRoot(root.value!, 'style[cssr-id]');
   });
 
