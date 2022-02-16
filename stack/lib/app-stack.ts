@@ -29,7 +29,7 @@ export class AssessmentAppStack extends Stack {
       defaultBehavior: {
         origin: new aws_cloudfront_origins.S3Origin(appBucket)
       },
-      defaultRootObject: 'main.es.js'
+      defaultRootObject: 'index.html'
       // domainNames: [''] use this to add your own domain instead of cloudfront url
     });
 

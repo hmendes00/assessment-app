@@ -2,7 +2,6 @@ import typescript from '@rollup/plugin-typescript';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import { defineConfig } from 'vite';
-import { viteExternalsPlugin } from 'vite-plugin-externals';
 
 const resolvePath = (file: string) => resolve(__dirname, file);
 
@@ -23,7 +22,7 @@ export default defineConfig(({ mode }) => {
       },
       rollupOptions: {
         // Externalize deps that shouldn't be bundled into the library.
-        external: ['vue', '@vueuse/core'],
+        // external: ['vue', '@vueuse/core'],
         output: {
           sourcemap: mode !== 'production'
         }
