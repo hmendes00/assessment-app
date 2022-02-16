@@ -1,3 +1,5 @@
+@import '@styles/variables.scss';
+
 .platform {
   background-color: $bg-dark;
   padding: 20px;
@@ -59,6 +61,4 @@
       }
     }
   }
-
-  // @import './monaco-editor.scss';
 }

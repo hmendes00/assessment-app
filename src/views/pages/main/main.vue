@@ -8,11 +8,13 @@
 </template>
 
 <script setup lang="ts">
+  import { InjectCssInShadowRootFromString } from '@/helpers/css-injector';
   import platform from '@/views/components/platform/platform.vue';
-  import { useLang } from '@/services/lang-service';
-  import { usePreferredDark } from '@vueuse/core';
   import { darkTheme, NConfigProvider } from 'naive-ui';
-  // const { $t } = useLang();
+  import { onMounted } from 'vue';
+  import thisCss from './main.scss';
 
-  // const prefersDark = usePreferredDark();
+  onMounted(() => {
+    InjectCssInShadowRootFromString(thisCss);
+  });
 </script>

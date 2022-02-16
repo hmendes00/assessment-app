@@ -44,12 +44,12 @@ export default defineConfig(({ mode }) => {
         allowSyntheticDefaultImports: true,
         sourceMap: mode !== 'production',
         inlineSources: mode !== 'production'
-      }),
-      // in case you want to integrate it to an existing application running vue under an alias
-      viteExternalsPlugin({
-        vue: 'vue3',
-        '@vueuse/core': 'vueUse'
       })
+      // in case you want to integrate it to an existing application running vue under an alias
+      // viteExternalsPlugin({
+      //   vue: 'vue3',
+      //   '@vueuse/core': 'vueUse'
+      // })
     ],
     resolve: {
       dedupe: ['vue'],
