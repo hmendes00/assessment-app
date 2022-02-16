@@ -2,6 +2,10 @@
 
 Assessment APP created using toguro-cli
 
+## DEMO
+
+[HERE](https://d3sok1tixll9a6.cloudfront.net/)
+
 ## Requirements
 
 - Node 16 (we have .nvmrc if you just want to run nvm use)
