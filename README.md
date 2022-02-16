@@ -6,11 +6,17 @@ Assessment APP created using toguro-cli
 
 - Node 16 (we have .nvmrc if you just want to run nvm use)
 
+## Quick Setup
+
+```
+npm install
+npm run dev
+// go to http://localhost:3000
+```
+
 ## How to install
 
-First make sure you are inside of _SRC_ folder (and not STACK folder)
-
-Then install the dependencies:
+Install the dependencies:
 
 ```bash
 npm install
