@@ -2,10 +2,9 @@
   import { onMounted } from 'vue';
   import appDispatcher, { AppActionTypes } from './store/modules/app/actions';
   import ToguroMain from './views/pages/main/main.vue';
-
   onMounted(() => {
     appDispatcher(AppActionTypes.SETUP_APP);
-  })
+  });
 </script>
 
 <template>

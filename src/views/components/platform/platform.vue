@@ -43,7 +43,7 @@
   import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
   //@ts-ignore
   import MonacoEditor from 'vue-monaco-cdn';
-  import { InjectCssInShadowRoot, InjectCssInShadowRootFromString } from '@/helpers/css-injector';
+  import { InjectCssInShadowRootFromString } from '@/helpers/css-injector';
   import { NSelect, NButton } from 'naive-ui';
   import { useLang } from '@/services/lang-service';
   import * as ts from 'typescript';
@@ -86,13 +86,6 @@
     ].join('\n');
   });
   onMounted(() => {
-    let style = document.createElement('link');
-    style.rel = 'stylesheet';
-    style.type = 'text/css';
-    style.href = 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.32.1/min/vs/editor/editor.main.css';
-    root.value!.appendChild(style);
-    InjectCssInShadowRoot(root.value!, 'style[cssr-id]');
-
     InjectCssInShadowRootFromString(thisCss);
   });
 

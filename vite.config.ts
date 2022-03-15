@@ -8,7 +8,7 @@ const resolvePath = (file: string) => resolve(__dirname, file);
 export default defineConfig(({ mode }) => {
   return {
     server: {
-      port: 3000,
+      port: 3001,
       strictPort: true, // throw error if port in use
       fs: {
         strict: false
